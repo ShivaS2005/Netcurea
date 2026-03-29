@@ -1,18 +1,24 @@
 import sys
 import os
-from flask import Flask, send_from_directory
 
 # Add the Backend directory to Python path
-sys.path.append(os.path.join(os.path.dirname(__file__), 'Syed Medigrid', 'VINSUP HOSPITAL', 'Backend'))
+current_dir = os.path.dirname(os.path.abspath(__file__))
+backend_dir = os.path.join(current_dir, 'Syed Medigrid', 'VINSUP HOSPITAL', 'Backend')
+sys.path.insert(0, backend_dir)
 
-# Import and run the Flask app
+# Change to backend directory to ensure proper imports
+os.chdir(backend_dir)
+
+# Now import the Flask app
 from app import app
 
-# Configure Flask to serve frontend static files
+# Add frontend serving routes
+from flask import send_from_directory
+
 @app.route('/')
 @app.route('/<path:path>')
 def serve_frontend(path=None):
-    frontend_dist = os.path.join(os.path.dirname(__file__), 'Syed Medigrid', 'VINSUP HOSPITAL', 'frontend', 'dist')
+    frontend_dist = os.path.join(current_dir, 'Syed Medigrid', 'VINSUP HOSPITAL', 'frontend', 'dist')
     
     # If path is empty, serve index.html
     if not path:
