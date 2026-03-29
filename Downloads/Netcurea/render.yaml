@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: netcurea-backend
+    env: python
+    buildCommand: cd "Syed Medigrid/VINSUP HOSPITAL/Backend" && pip install -r requirements.txt
+    startCommand: cd "Syed Medigrid/VINSUP HOSPITAL/Backend" && python app.py
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.0
+      - key: MONGODB_URI
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: FLASK_ENV
+        value: production
+
+  - type: web
+    name: netcurea-frontend
+    env: static
+    buildCommand: cd "Syed Medigrid/VINSUP HOSPITAL/frontend" && npm install && npm run build
+    staticPublishPath: "Syed Medigrid/VINSUP HOSPITAL/frontend/dist"
+    envVars:
+      - key: VITE_API_URL
+        sync: false
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
